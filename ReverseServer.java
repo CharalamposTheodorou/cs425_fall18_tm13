@@ -1,4 +1,3 @@
-package reverse_server_multi_threaded;
 
 import java.io.*;
 import java.net.*;
@@ -10,25 +9,22 @@ import java.net.*;
  */
 public class ReverseServer {
 
-    public static void main(String[] args) {
-        if (args.length < 1) return;
+	public static void main(String[] args) {
+		if (args.length < 1)
+			return;
 
-        int port = Integer.parseInt(args[0]);
-        int random_users=12;//given
-        try (ServerSocket serverSocket = new ServerSocket(port,random_users)) {
+		int port = Integer.parseInt(args[0]);
+		int random_users = 12;
+		try (ServerSocket serverSocket = new ServerSocket(port, random_users)) {
 
-            System.out.println("Server is listening on port " + port);
+			System.out.println("Server is listening on port " + port);
+			Socket socket = serverSocket.accept();
+			System.out.print("test");
+			new ServerThread(socket, 0).start();
 
-
-            for(int i=0;i<10;i++)
-            {
-                Socket socket = serverSocket.accept();
-                new ServerThread(socket,i).start();
-            }
-
-        } catch (IOException ex) {
-            System.out.println("Server exception: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
+		} catch (IOException ex) {
+			System.out.println("Server exception: " + ex.getMessage());
+			ex.printStackTrace();
+		}
+	}
 }

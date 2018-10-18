@@ -1,4 +1,3 @@
-package reverse_server_multi_threaded;
 
 import java.io.*;
 import java.net.*;
