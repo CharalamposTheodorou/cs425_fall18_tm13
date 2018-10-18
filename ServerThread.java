@@ -21,7 +21,7 @@ public class ServerThread extends Thread {
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-            OutputStream output = socket.getOutputStream();
+            OutputStream output = new DataOutputStream(socket.getOutputStream());
             PrintWriter writer = new PrintWriter(output, true);
 
             Response re=new Response(user_id);
@@ -37,6 +37,7 @@ public class ServerThread extends Thread {
               writer.prinln(re.response+"<"+re.user_id+">");
               output.writeDouble(re.response);
               re.setResponse();
+              //output stream to return response...
                 /*text = reader.readLine();
                 String reverseText = new StringBuilder(text).reverse().toString();
                 writer.println("Server: " + reverseText);*/
