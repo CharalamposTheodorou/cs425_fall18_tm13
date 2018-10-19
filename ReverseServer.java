@@ -19,12 +19,24 @@ public class ReverseServer {
 
 			System.out.println("Server is listening on port " + port);
 			Socket socket = serverSocket.accept();
+
+			InputStream inStream=socket.getInputStream();
+			ObjectInputStream objectInStream= new ObjectInputStream(inStream);
+			Request req=(Request) objectInStream.readObject();
+			if(req!=null){
+				System.out.println(req.Hello+" "+req.IP+" "+req.portNo+" ");
+			}
+
+			//////mallon dame tha prepi na dimiourgume to response nmzo 
 			System.out.print("test");
 			new ServerThread(socket, 0).start();
 
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

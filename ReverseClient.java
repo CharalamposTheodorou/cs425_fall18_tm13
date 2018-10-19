@@ -18,11 +18,10 @@ static int user_id;
 
         try (Socket socket = new Socket(hostname, port)) {
 
-           // OutputStream output = socket.getOutputStream();
            // PrintWriter writer = new PrintWriter(output, true);
 
-            Scanner scan = new Scanner(System.in);
-            String text;
+            //Scanner scan = new Scanner(System.in);
+            //String text;
 
             //do {
             	/*System.out.print("Enter text: ");
@@ -44,16 +43,22 @@ static int user_id;
           //  InputStreamReader inputR= new InputStreamReader(input);
           //  BufferedReader br=new BufferedReader(inputR);
           //  System.out.println(br.readLine());
+        	ObjectOutputStream objectOutStream = null;
             for(int i=0;i<300;i++)
             {
-              Request request=new Request(user_id,port);
-              request.setIP("192.168.10."+request.user_id);
+                OutputStream output = socket.getOutputStream();
+                objectOutStream=new ObjectOutputStream(output);
+                Request req=new Request(1,6868,"theIPThatIDontKnow");
+                objectOutStream.writeObject(req);
+                objectOutStream.writeObject(req);
+              //Request request=new Request(user_id,port);
+             // request.setIP("192.168.10."+request.user_id);
              //bw.write(request.);
             //  bw.flush();
               //has to send and reveive objects...
             }
-            scan.close();
-
+            objectOutStream.close();
+            //scan.close();
             socket.close();
 
         } catch (UnknownHostException ex) {

@@ -5,7 +5,7 @@ import java.net.*;
 /**
  * This thread is responsible to handle client connection.
  */
-public class Response{
+class Response implements Serializable{
   double time_executed;
   static final String response="WELCOME";
   int user_id;
