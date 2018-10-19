@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.net.*;
 
@@ -7,55 +6,42 @@ import java.net.*;
  */
 public class ServerThread extends Thread {
 	private Socket socket;
-	int requests = 0;
-	final static int MAX_REQUESTS = 300;
-	static int user_id;
 
-	public ServerThread(Socket socket, int id) {
+	public ServerThread(Socket socket) {
 		this.socket = socket;
-		this.user_id = id;
-		this.run();
 	}
 
 	public void run() {
 		try {
-			// InputStream input = socket.getInputStream();
-			// BufferedReader reader = new BufferedReader(new
-			// InputStreamReader(input));
 			if (socket.isClosed())
 				return;
-			OutputStream output = socket.getOutputStream();
-			PrintWriter writer = new PrintWriter(output, true);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter writer= new PrintWriter(socket.getOutputStream(),true);
 
-			Response re = new Response(user_id);
-			this.requests = 0;
-			// String text;
+        String hello=reader.readLine();
+        String port= reader.readLine();
+        int userid=reader.readLine();
+        /*System.out.print(hello+" user:"+userid+" at port:"+port);*/
+        Random rmd=new Random(System.currentTimeMillis());
+//random.nextInt= [0-300K]->+300K= [300K-2000K]
+        int payload=random.nextInt((2000*1024-300*1024))+300*1024;
 
-			do {
+        writer.println("WELCOME"+userid);
+        writer.println(payload);
 
-				System.out.println("Issuing Response Message to client with id" + this.user_id + " " + this.requests);
-				this.requests++;
-				re.payload = System.currentTimeMillis() - re.time_executed;
-				writer.println(re.response + "<" + re.user_id + ">");
-				writer.println(re.response);
-				re.setResponse();
-				// output stream to return response...
-				/*
-				 * text = reader.readLine(); String reverseText = new
-				 * StringBuilder(text).reverse().toString(); writer.println(
-				 * "Server: " + reverseText);
-				 */
-
-				// new while condition, variable to keep connection..
-				// iterations(300).
-			} while (this.requests <= MAX_REQUESTS);
-			writer.close();
-			output.close();
 			socket.close();
-			
+
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			 //TODO Auto-generated catch block
+			 e.printStackTrace();
+		}
+		catch(InterruptedException ie)
+		{
+			ie.printStackTrace();
 		}
 
 	}
