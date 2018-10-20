@@ -15,22 +15,22 @@ public class Server  {
 
 		//int port = Integer.parseInt(args[0]);
 		int users=Integer.parseInt(args[0]);
-		int throughput;
+		double throughput = 0;
 		try (ServerSocket serverSocket = new ServerSocket(port)){//,users)) {
 
 			System.out.println("Server is listening on port " + port);
 			while(true)
 			{
 				Socket socket = serverSocket.accept();
-//maybe needs start();...
-				new ServerThread(socket).run();
-		}
+				//maybe needs start();...
+				ServerThread thread = new ServerThread(socket);
+				thread.run();
+				throughput += thread.getThroughput();
+				System.out.println("Total throughput: " + throughput);
+			}
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();
-		} //catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}
+		}
 	}
 }
