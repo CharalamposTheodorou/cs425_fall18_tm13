@@ -16,7 +16,7 @@ public class Server  {
 		//int port = Integer.parseInt(args[0]);
 		int users=Integer.parseInt(args[0]);
 		int throughput;
-		try (ServerSocket serverSocket = new ServerSocket(port,users )) {
+		try (ServerSocket serverSocket = new ServerSocket(port)){//,users)) {
 
 			System.out.println("Server is listening on port " + port);
 			while(true)

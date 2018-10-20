@@ -17,11 +17,11 @@ public class ServerThread extends Thread {
         PrintWriter writer= new PrintWriter(socket.getOutputStream(),true);
         String text;
         for(int i=0;i<MAX_ITERATIONS;i++)
-        {
+       {
         String hello=reader.readLine();
         String address= reader.readLine();
         String port=reader.readLine();
-        String userid= reader.readLine();
+        String userid = reader.readLine();
         String id=reader.readLine();
         
         System.out.println(hello+" user:"+id+" at address:"+address+" on port:"+port);
@@ -33,7 +33,7 @@ public class ServerThread extends Thread {
         writer.println(payload);
 
         }
-        socket.close();
+        	socket.close();
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();
