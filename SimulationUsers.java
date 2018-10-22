@@ -6,18 +6,22 @@ public class SimulationUsers {
 	final static int MAX_ITERATIONS = 300;
 
 	public static void main(String args[]) {
+		double ret[];
+		double sumThrough=0;
 		ArrayList<Double> latencies = new ArrayList<Double>();
 		int users = Integer.parseInt(args[0]);
 		while (true) {
 			for (int i = 1; i <= users; i++){
-				double latency = new Client().start("" + i);
-				latencies.add(latency);
+				ret = new Client().start("" + i,""+users);
+				latencies.add(ret[0]);
+				sumThrough+=ret[1];
 			}
 			double totalLatency = 0;
 			for (int i  =0; i<latencies.size(); i++){
 				totalLatency += latencies.get(i);
 			}
-			System.out.println("Total Latency: "+totalLatency);
+			System.out.println("Total Latency: "+totalLatency+" nanoseconds");
+			System.out.println("Total Throughput: "+Math.pow(10,9)*sumThrough);
 			break;
 			/*
 			 * ArrayList<Socket> socket=new ArrayList<Socket>(); int port=6868; for(int

@@ -16,7 +16,7 @@ public class Server  {
 		//int port = Integer.parseInt(args[0]);
 		int users=Integer.parseInt(args[0]);
 		double throughput = 0;
-		try (ServerSocket serverSocket = new ServerSocket(port)){//,users)) {
+		try (ServerSocket serverSocket = new ServerSocket(port,users)){//,users)) {
 
 			System.out.println("Server is listening on port " + port);
 			while(true)
@@ -26,11 +26,11 @@ public class Server  {
 				ServerThread thread = new ServerThread(socket);
 				thread.run();
 				throughput += thread.getThroughput();
-				System.out.println("Total throughput: " + throughput);
 			}
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();
 		}
+
 	}
 }

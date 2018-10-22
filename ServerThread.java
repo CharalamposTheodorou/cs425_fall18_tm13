@@ -31,22 +31,25 @@ public class ServerThread extends Thread {
                 String port=reader.readLine();
                 String userid = reader.readLine();
                 String id=reader.readLine();
-                System.out.println(hello+" user:"+id+" at address:"+address+" on port:"+port);
+               System.out.println(hello+" user:"+id+" at address:"+address+" on port:"+port);
                 Random rmd=new Random(System.currentTimeMillis());
                 //random.nextInt= [0-300K]->+300K= [300K-2000K]
-                int payload=(rmd.nextInt((2000*1024-300*1024))+300*1024)*1024;
+                int payload=(rmd.nextInt((2000*1024-300*1024))+300*1024)/1024;
 
                 writer.println("WELCOME user:"+id);
                 writer.println(payload);
                 requestCounter++;
             }
             double estimatedTime=System.nanoTime()-startTime;
-            throughput=(double)requestCounter/estimatedTime;
+            throughput=(double)(requestCounter/estimatedTime);
+
+            this.throughput = throughput;
+            double through=this.throughput/estimatedTime;
+            writer.println(through+"");
             socket.close();
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
         }  
-        this.throughput = throughput;
     }
 }
