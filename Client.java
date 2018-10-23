@@ -10,8 +10,15 @@ public class Client extends Thread {
     final static String hostname="localhost";
     public  final static int port=6868;
     final static int MAX_ITERATIONS=300;
+    double retThrough=0;
+    double retLatency=0;
+    String userid;
     //public static void main(String args[])
-    public double[] start(String userid,String maxUsers)
+    public Client(String userid)
+    {
+    	this.userid=userid;
+    }
+    public void run()
     {
         double ret[]=new double[2];
         double sumLatency=0;
@@ -42,9 +49,19 @@ public class Client extends Thread {
             } 
             through=reader.readLine();
             sumThrough=Double.parseDouble(through);
+            
            // if(userid.compareTo(maxUsers)==0)
         	//	System.out.println("Total throughput: " + through+" nanoseconds");
-            	
+            SimulationUsers.countUsers++;
+            if(SimulationUsers.countUsers==SimulationUsers.maxUsers)
+            {
+    			double totalLatency = 0;
+    			for (int i  =0; i<SimulationUsers.latencies.size(); i++){
+    				totalLatency += SimulationUsers.latencies.get(i);
+    			}
+    			System.out.println("Total Latency: "+totalLatency+" nanoseconds");
+    			System.out.println("Total Throughput: "+Math.pow(10,9)*sumThrough);
+            }
             socket.close();
         }
         catch (UnknownHostException ex) {
@@ -55,9 +72,10 @@ public class Client extends Thread {
             
             System.out.println("I/O error: " + ex.getMessage());
         }
-        ret[0]=sumLatency;
-        ret[1]=sumThrough;
-        return ret;
+        this.retLatency=sumLatency;
+        this.retThrough=sumThrough;
+        SimulationUsers.latencies.add(this.retLatency);
+        SimulationUsers.Through=sumThrough;
     }
 }
 

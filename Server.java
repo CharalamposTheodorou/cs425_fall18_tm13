@@ -22,9 +22,9 @@ public class Server  {
 			while(true)
 			{
 				Socket socket = serverSocket.accept();
-				//maybe needs start();...
+				
 				ServerThread thread = new ServerThread(socket);
-				thread.run();
+				thread.start();
 				throughput += thread.getThroughput();
 			}
 		} catch (IOException ex) {
