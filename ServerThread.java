@@ -13,6 +13,7 @@ import javax.management.ObjectName;
 public class ServerThread extends Thread {
     private Socket socket;
     public double throughput;
+    public double cpuUtilization;
 	final static int MAX_ITERATIONS=300;
 	public ServerThread(Socket socket) {
 	        this.socket = socket;
@@ -21,6 +22,11 @@ public class ServerThread extends Thread {
     public double getThroughput() {
         return this.throughput;
     }
+    
+    public double returnCPU(){
+    	return this.cpuUtilization;
+    }
+    
     public static double getMemoryUtilization()
     {
     	long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
@@ -73,11 +79,17 @@ public class ServerThread extends Thread {
             this.throughput = throughput;
             double through=this.throughput/estimatedTime;
             writer.println(through+"");
-            writer.println(getMemoryUtilization()+"");
+            double cpuUtilization=getMemoryUtilization();
+
+            
             try {
-				writer.println(getCPU()+"");
+            	double cpu=getCPU();
+				writer.println(cpu+"");
+				System.out.println(cpu);
+				writer.println(cpuUtilization+"");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				System.out.println("CPU Exception");
 				e.printStackTrace();
 			}
             socket.close();

@@ -26,6 +26,7 @@ public class Server  {
 				ServerThread thread = new ServerThread(socket);
 				thread.start();
 				throughput += thread.getThroughput();
+				
 			}
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());

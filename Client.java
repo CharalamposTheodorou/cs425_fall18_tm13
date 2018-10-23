@@ -7,7 +7,7 @@ import java.io.*;
  * from the user and prints echoed message from the server.
  */
 public class Client extends Thread {
-    final static String hostname="34.218.239.230";
+    final static String hostname="localhost";
     public  final static int port=6868;
     final static int MAX_ITERATIONS=300;
     double retThrough=0;
@@ -24,7 +24,7 @@ public class Client extends Thread {
         double sumLatency=0;
         String through="";
         double sumThrough=0;
-        try(Socket socket=new Socket("localhost",port))
+        try(Socket socket=new Socket(hostname,port))
         {
             double latency=0;
 
@@ -49,7 +49,10 @@ public class Client extends Thread {
             } 
             through=reader.readLine();
             sumThrough=Double.parseDouble(through);
-            double cpuload=Double.parseDouble(reader.readLine());
+            String t=reader.readLine();
+            System.out.println(t);
+            double cpuload=Double.parseDouble(t);
+            System.out.println(cpuload);
             double memory=Double.parseDouble(reader.readLine());
             
            // if(userid.compareTo(maxUsers)==0)
@@ -60,7 +63,7 @@ public class Client extends Thread {
             if(SimulationUsers.countUsers==SimulationUsers.maxUsers)
             {
     			double totalLatency = 0;
-    			for (int i  =0; i<SimulationUsers.latencies.size(); i++){
+    			for (int i  =0; i<SimulationUsers.latencies.size()-1; i++){
     				totalLatency += SimulationUsers.latencies.get(i);
     			}
     			System.out.println("Total Latency: "+totalLatency+" nanoseconds");
