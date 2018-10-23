@@ -8,6 +8,8 @@ public class SimulationUsers {
 	public static double Through;
 	public static int countUsers=0;
 	public static int maxUsers;
+	public static double memory=0;
+	public static double cpu=0;
 	public static void main(String args[]) {
 		double sumThrough=0;
 		

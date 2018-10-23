@@ -1,6 +1,12 @@
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.util.*;
+
+import javax.management.Attribute;
+import javax.management.AttributeList;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 /**
  * This thread is responsible to handle client connection.
  */
@@ -15,7 +21,28 @@ public class ServerThread extends Thread {
     public double getThroughput() {
         return this.throughput;
     }
+    public static double getMemoryUtilization()
+    {
+    	long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+		double persantage = (100.0 * afterUsedMem) / (Runtime.getRuntime().totalMemory() * 1.0);
+		return ((int) (persantage * 10) / 10.0);
+    }
+    public static double getCPU() throws Exception
+    {
+    	MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
+		ObjectName name = ObjectName.getInstance("java.lang:type=OperatingSystem");
+		AttributeList list = mbs.getAttributes(name, new String[] { "ProcessCpuLoad" });
 
+		if (list.isEmpty())
+			return Double.NaN;
+
+		Attribute att = (Attribute) list.get(0);
+		Double value = (Double) att.getValue();
+
+		if (value == -1.0)
+			return Double.NaN;
+		return ((int) (value * 1000) / 10.0);
+    }
 	public void run() {
         double throughput = 0;
         try {
@@ -46,6 +73,13 @@ public class ServerThread extends Thread {
             this.throughput = throughput;
             double through=this.throughput/estimatedTime;
             writer.println(through+"");
+            writer.println(getMemoryUtilization()+"");
+            try {
+				writer.println(getCPU()+"");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             socket.close();
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
